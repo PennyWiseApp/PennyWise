@@ -4,6 +4,7 @@ Group Members:
 Omer Ibrahim UP2123828
 Ruben Tanner UP2109969
 Mufaro Mudiwa UP2081619
+George Hill UP2107551
 <!-- ENTER YOUR NAMES AND STUDENT NUMBERS BELOW :) -->
 
 It was six men from Indostan,
@@ -30,7 +31,7 @@ is very like a spear".
 The third approached the animal,
 and happening to take,
 the squirming trunk within his hands
-thus bodly up and spake,
+thus boldly up and spake,
 "I see" quoth he "the elephant is 
 very like a snake".
 
