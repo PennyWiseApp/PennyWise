@@ -1,2 +1,1 @@
-# PennieWize
-SETAP Group Project
+# PennyWise
