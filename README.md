@@ -14,3 +14,19 @@ against its strong and sturdy side,
 at once began to bawl,
 "I see" quoth he, "the elephant
 is very like a wall".
+
+The second feeling of the tusk,
+cried "Ho! What have we here?
+'Tis very round and smooth and sharp
+to me 'Tis mighty clear,
+this marvel of an elephant
+is very like a spear".
+
+The third approached the animal,
+and happening to take,
+the squirming trunk within his hands
+thus bodly up and spake,
+"I see" quoth he "the elephant is 
+very like a snake".
+
+George got bored with poetry.
