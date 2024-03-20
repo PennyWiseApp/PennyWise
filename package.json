@@ -5,7 +5,6 @@
   "scripts": {
     "start-streamlit": "cd backend && streamlit run app.py",
     "postinstall": "python3 -m venv backend/venv && . backend/venv/bin/activate && pip install -r backend/requirements.txt"
-    
   },
   "repository": {
     "type": "git",
@@ -16,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/PennyWiseApp/PennyWise/issues"
   },
-  "homepage": "https://github.com/PennyWiseApp/PennyWise#readme"
+  "homepage": "https://github.com/PennyWiseApp/PennyWise#readme",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
 }
