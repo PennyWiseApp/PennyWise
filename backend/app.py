@@ -1,4 +1,4 @@
-# import matplotlib.pyplot as plt
+
 
 class budgetCategory:
     def __init__(self, description, priority, limit):
