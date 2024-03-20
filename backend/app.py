@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 class budgetCategory:
     def __init__(self, description, priority, limit):
         self.description = description
@@ -83,19 +82,4 @@ budget_manager.disable_notification('Entertainment')
 budget_manager.make_purchase(80, 'Entertainment')
 
 print(budget_manager.categories)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
