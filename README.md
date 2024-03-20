@@ -7,35 +7,71 @@ Mufaro Mudiwa UP2081619
 George Hill UP2107551
 Shreya Jagannatha UP2105326
 
+---
 
-"Learning new things growing with friends and discovering new opportunites nad seeing new life experiecnes makes it all the more worth it despite all the troubles and errors and dilemnas along the way, also knowing what we will laern each day is fun too".
+## Project Setup
 
-It was six men from Indostan,
-to learning much inclined,
-that went to see the elephant,
-though all of them were blind,
-that each by observation,
-might satisfy his mind.
+This project is structured to include both a Node.js-based frontend and a Python-based backend utilizing Streamlit. To streamline the setup process, we have included a `postinstall` script in the `package.json` file that automatically prepares the Python environment and installs the necessary Python dependencies after running `npm install`.
 
-The first approached the elephant,
-and happening to fall,
-against its strong and sturdy side,
-at once began to bawl,
-"I see" quoth he, "the elephant
-is very like a wall".
+### Prerequisites
 
-The second feeling of the tusk,
-cried "Ho! What have we here?
-'Tis very round and smooth and sharp
-to me 'Tis mighty clear,
-this marvel of an elephant
-is very like a spear".
+Before proceeding with the setup, please ensure you have the following installed on your system:
 
-The third approached the animal,
-and happening to take,
-the squirming trunk within his hands
-thus boldly up and spake,
-"I see" quoth he "the elephant is 
-very like a snake".
+- Node.js (and npm)
+- Python 3
+- pip (Python package installer)
 
-George got bored with poetry.
+These tools are essential for the setup process and the execution of the application.
+
+### Installation
+
+1. **Clone the Repository**
+
+   First, clone this repository to your local machine using Git:
+
+   ```bash
+   git clone [<repository-url>](https://github.com/PennyWiseApp/PennyWise.git)
+   cd PennyWise
+   ```
+
+2. **Run npm Install**
+
+   Within the root directory of the project, run the following command:
+
+   ```bash
+   npm install
+   ```
+
+   This command does several things:
+
+   - Installs the Node.js dependencies listed in `package.json`.
+   - Automatically triggers the `postinstall` script, which sets up the Python virtual environment (`venv`) within the `backend/` directory and installs the Python dependencies specified in `backend/requirements.txt`.
+
+   **Note:** The `postinstall` script specifically does the following:
+
+   - Creates a Python virtual environment in `backend/venv`.
+   - Activates the virtual environment.
+   - Uses `pip` to install the Python packages listed in `backend/requirements.txt`.
+
+### Running the Application
+
+After the installation is complete, you're ready to run the application.
+
+- **To start the Node.js frontend**, use:
+
+  ```bash
+  npm start
+  ```
+
+  (Refer to the `scripts` section in `package.json` for the exact command used to start the frontend.)
+
+- **To launch the Streamlit application**, use:
+
+  ```bash
+    npm start-streamlit
+  ```
+
+### Additional Notes
+
+- The project setup and execution instructions assume a Unix-like environment (Linux/macOS). For Windows, the activation command for the virtual environment is slightly different (`venv\Scripts\activate`).
+- Always ensure that your Python and Node.js environments are correctly set up and that the versions meet the project's requirements.
