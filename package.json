@@ -2,7 +2,10 @@
   "name": "pennywise",
   "version": "1.0.0",
   "description": "2nd year SETAP Project Group 3a",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
+    "start": "cd frontend && node server",
     "start-streamlit": "cd backend && streamlit run app.py",
     "postinstall": "python3 -m venv backend/venv && . backend/venv/bin/activate && pip install -r backend/requirements.txt"
   },
@@ -17,6 +20,6 @@
   },
   "homepage": "https://github.com/PennyWiseApp/PennyWise#readme",
   "dependencies": {
-    "express": "^4.18.3"
+    "express": "^4.18.2"
   }
 }
