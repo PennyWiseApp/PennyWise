@@ -3,6 +3,7 @@ import express from "express";
 const app = express();
 
 app.use(express.static("client", { extensions: ["html"] }));
+app.use(express.json());
 
 // In-memory storage for demonstration purposes
 let categories = [];
