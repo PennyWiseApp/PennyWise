@@ -1,15 +1,4 @@
-# PennyWise
-
-Group Members:
-Omer Ibrahim UP2123828
-Ruben Tanner UP2109969
-Mufaro Mudiwa UP2081619
-George Hill UP2107551
-Shreya Jagannatha UP2105326
-
----
-
-## Project Setup
+# Project Setup
 
 This project is structured to include both a Node.js-based frontend and a Python-based backend utilizing Streamlit. To streamline the setup process, we have included a `postinstall` script in the `package.json` file that automatically prepares the Python environment and installs the necessary Python dependencies after running `npm install`.
 
@@ -75,3 +64,30 @@ After the installation is complete, you're ready to run the application.
 
 - The project setup and execution instructions assume a Unix-like environment (Linux/macOS). For Windows, the activation command for the virtual environment is slightly different (`venv\Scripts\activate`).
 - Always ensure that your Python and Node.js environments are correctly set up and that the versions meet the project's requirements.
+
+# PennyWise
+
+Group Members:
+Omer Ibrahim UP2123828
+Ruben Tanner UP2109969
+Mufaro Mudiwa UP2081619
+George Hill UP2107551
+Shreya Jagannatha UP2105326
+
+## Technology Stack
+
+- Node.js
+- Express
+- HTML/CSS/JavaScript
+- IndexedDB
+
+## Setup
+
+### Installation
+
+1. Install Node.js and npm.
+2. Clone this repository.
+3. Navigate to the project directory and install dependencies:
+   ```bash
+   npm install
+   ```
