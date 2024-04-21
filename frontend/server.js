@@ -5,40 +5,71 @@ const app = express();
 app.use(express.static("client", { extensions: ["html"] }));
 app.use(express.json());
 
-// In-memory storage for demonstration purposes
 let categories = [];
 let transactions = [];
 
-// Route to add a new category
 app.post("/add-category", (req, res) => {
-  const { name, priority } = req.body;
-  if (!name || priority === undefined) {
-    return res.status(400).send("Missing name or priority for the category.");
+  const { name, priority, isFun } = req.body;
+  if (!name || priority === undefined || isFun === undefined) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "Missing required category details: 'name', 'priority', or 'isFun'.",
+      });
   }
-  const newCategory = { name, priority };
+  const newCategory = { name, priority, isFun };
   categories.push(newCategory);
-  res.status(201).send("Category added successfully.");
+  res
+    .status(200)
+    .json({ message: "Category added successfully", category: newCategory });
 });
 
-// Route to record a new transaction
 app.post("/record-transaction", (req, res) => {
   const { type, amount, categoryName } = req.body;
   if (!type || amount === undefined || !categoryName) {
-    return res.status(400).send("Missing transaction details.");
+    return res
+      .status(400)
+      .json({
+        error:
+          "Missing transaction details: 'type', 'amount', or 'categoryName'.",
+      });
   }
   const newTransaction = { type, amount, categoryName };
   transactions.push(newTransaction);
-  res.status(201).send("Transaction recorded successfully.");
+  res
+    .status(201)
+    .json({
+      message: "Transaction recorded successfully",
+      transaction: newTransaction,
+    });
 });
 
-// Route to get all categories
 app.get("/categories", (req, res) => {
   res.json(categories);
 });
 
-// Route to get all transactions
 app.get("/transactions", (req, res) => {
   res.json(transactions);
 });
 
-app.listen(8080);
+app.get("/budget", (req, res) => {
+  let totalIncome = 0;
+  let totalExpenses = 0;
+  transactions.forEach((transaction) => {
+    if (transaction.type === "income") {
+      totalIncome += transaction.amount;
+    } else if (transaction.type === "expense") {
+      totalExpenses += transaction.amount;
+    }
+  });
+
+  const remainingBudget = totalIncome - totalExpenses;
+  const funCategories = categories.filter((category) => category.isFun);
+  const funPotAmount =
+    funCategories.length > 0 ? remainingBudget / funCategories.length : 0;
+
+  res.json({ totalIncome, totalExpenses, remainingBudget, funPotAmount });
+});
+
+app.listen(8080, () => console.log("Server running on port 8080"));
