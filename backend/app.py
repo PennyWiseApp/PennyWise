@@ -1,4 +1,4 @@
-import streamlit as st
+#import streamlit as st
 
 class budgetCategory:
     def __init__(self, description, priority, limit):
