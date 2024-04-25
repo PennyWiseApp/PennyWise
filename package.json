@@ -6,8 +6,6 @@
   "type": "module",
   "scripts": {
     "start": "cd frontend && node server",
-    "start-streamlit": "cd backend && streamlit run app.py",
-    "postinstall": "python3 -m venv backend/venv && . backend/venv/bin/activate && pip install -r backend/requirements.txt",
     "test": "jest"
   },
   "repository": {
@@ -24,6 +22,11 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "jsdom": "^20.0.0",
+    "jest-environment-jsdom": "^29.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   }
 }

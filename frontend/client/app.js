@@ -1,6 +1,6 @@
 let db;
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function () {
   let request = window.indexedDB.open("BudgetDB", 1);
 
   request.onerror = function (event) {
@@ -21,7 +21,7 @@ window.onload = function () {
       autoIncrement: true,
     });
   };
-};
+});
 
 async function addCategory() {
   const categoryName = document.querySelector("#categoryName").value;

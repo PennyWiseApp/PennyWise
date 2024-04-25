@@ -1,10 +1,11 @@
-import {
+const {
   addCategory,
   fetchCategories,
   recordTransaction,
   fetchTransactions,
-} from "../app"; // Adjust path as necessary
-import { resetDB, setupDB } from "./testHelpers";
+} = require("./app");
+
+const { resetDB, setupDB } = require("/testHelpers");
 
 describe("Category Management", () => {
   beforeEach(async () => {
@@ -58,5 +59,3 @@ describe("Transaction Management", () => {
     });
   });
 });
-
-// Additional tests for fetchBudget and other functions can be added here
