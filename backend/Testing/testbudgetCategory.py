@@ -1,7 +1,7 @@
 import unittest
 from app import budgetCategory
 
-class budgetCategorytest(unittest.TestCase):
+class budgetCategorytest(unittest.TestCase):   
     # ADD TEST STUFF   
     def test_update_priority(self):
         category = budgetCategory("Test", 5, 300)
@@ -15,3 +15,5 @@ class budgetCategorytest(unittest.TestCase):
         category = budgetCategory("Test", 5, 300)
         self.assertIsNone(category.can_notify("Test"))
     
+if __name__ == '__main__':
+    unittest.main()
