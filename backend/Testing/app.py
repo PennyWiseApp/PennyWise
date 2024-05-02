@@ -30,7 +30,6 @@ class budgetCategory:
                 return None
         else:
             return None
-            
 
 class BudgetManager:
     def __init__(self, overall_budget):
@@ -44,6 +43,7 @@ class BudgetManager:
     def add_category(self, category, priority, limit):
         new_category = budgetCategory(category, priority, limit)
         self.categories.append(new_category)
+        return "Category " + category + " added"
         
     def get_category(self, category_name):
         for i in self.categories:
@@ -54,39 +54,27 @@ class BudgetManager:
         budget_category = self.get_category(category)
         budget_category.spent += amount
         budget_category.check_limit()
+        return "Updated spending amount is: " , amount
 
     def disable_notification(self, category):
         budget_category = self.get_category(category)
         budget_category.can_notify = False
+        return "The notifications for " + category + " has been turned off"
 
     def enable_notification(self, category):
         budget_category = self.get_category(category)
         budget_category.can_notify = True
+        return "The notifications for " + category + " has been turned on"
 
     def make_purchase(self, amount, category):
         # Connect to bank details logic can be added here
         self.update_spending(category, amount)
-        print(f"Purchase of £{amount} made in {category} category.")
+        return "Purchase of £ " , amount , "made in " , category , " category."
 
     def display_budget_scales(self):
         print("Displaying Budget Scales...")
         # Logic to display budget scales
 
 
-# Example uses:
-budget_manager = BudgetManager(1000)  # Set overall budget to 1000
 
-budget_manager.generate_budget()
-
-budget_manager.add_category('Groceries', 8, 200)
-budget_manager.add_category('Entertainment', 4, 100)
-
-budget_manager.make_purchase(50, 'Groceries')
-budget_manager.make_purchase(30, 'Entertainment')
-
-budget_manager.disable_notification('Entertainment')
-
-budget_manager.make_purchase(80, 'Entertainment')
-
-print(budget_manager.categories)
 
