@@ -9,11 +9,11 @@ class budgetCategorytest(unittest.TestCase):
     
     def test_check_limit(self):
         category = budgetCategory("Test", 5, 300)
-        self.assertEqual(category.check_limit(), 0)
+        self.assertEqual(category.check_limit(), "")
         
     def test_notify(self):
         category = budgetCategory("Test", 5, 300)
-        self.assertIsNone(category.can_notify("Test"))
+        self.assertIsNone(category.notify("Test"))
     
 if __name__ == '__main__':
     unittest.main()
