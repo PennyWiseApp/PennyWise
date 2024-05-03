@@ -4,21 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Budget App</title>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   </head>
   <body>
     <h1>Budget App</h1>
 
+    <!-- Login/Register forms added here: -->
+    <section>
+      <h2>Register</h2>
+      <label for="registerUsername">Username:</label>
+      <input type="text" id="registerUsername" />
+      <label for="registerPassword">Password:</label>
+      <input type="password" id="registerPassword" />
+      <button class="registerButton">Register</button>
+    </section>
+
+    <section>
+      <h2>Login</h2>
+      <label for="loginUsername">Username:</label>
+      <input type="text" id="loginUsername" />
+      <label for="loginPassword">Password:</label>
+      <input type="password" id="loginPassword" />
+      <button class="loginButton">Login</button>
+    </section>
+
     <section>
       <h2>Add Spending Category</h2>
       <label for="categoryName">Category Name:</label>
-      <input type="text" id="categoryName" name="categoryName" />
+      <input type="text" id="categoryName" />
       <label for="priority">Priority (1-10):</label>
       <input type="number" id="priority" name="priority" min="1" max="10" />
-      <label for="isFun">Is Fun Category:</label>
-      <input type="checkbox" id="isFun" name="isFun" /> This is a fun
-      category<br />
+      <label for="isFun">Is Fun:</label>
+      <input type="checkbox" id="isFun" />
       <button onclick="addCategory()">Add Category</button>
     </section>
 
@@ -36,31 +59,25 @@
       <input type="radio" id="income" name="transactionType" value="Income" />
       Income<br />
       <label for="amount">Amount:</label>
-      <input type="number" id="amount" name="amount" min="0" />
+      <input type="number" id="amount" />
       <label for="transactionCategory">Category:</label>
-      <input type="text" id="transactionCategory" name="transactionCategory" />
+      <input type="text" id="transactionCategory" />
       <button onclick="recordTransaction()">Record Transaction</button>
     </section>
 
     <section>
       <h2>Categories</h2>
-      <ul id="categoriesList">
-        <!-- Categories will be added here -->
-      </ul>
+      <ul id="categoriesList"></ul>
     </section>
 
     <section>
       <h2>Transactions</h2>
-      <ul id="transactionsList">
-        <!-- Transactions will be added here -->
-      </ul>
+      <ul id="transactionsList"></ul>
     </section>
 
     <section>
       <h2>Budget Overview</h2>
-      <div id="budgetOverview">
-        <!-- Budget information will be displayed here -->
-      </div>
+      <div id="budgetOverview"></div>
       <button onclick="fetchBudget()">Refresh Budget</button>
     </section>
   </body>
