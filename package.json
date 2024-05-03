@@ -19,12 +19,18 @@
   },
   "homepage": "https://github.com/PennyWiseApp/PennyWise#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^8.5.1",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jsdom": "^20.0.0",
-    "jest-environment-jsdom": "^29.0.0"
+    "jest-environment-jsdom": "^29.0.0",
+    "jsdom": "^20.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom"
