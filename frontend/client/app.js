@@ -1,67 +1,84 @@
-let db;
-
 document.addEventListener("DOMContentLoaded", function () {
-  let request = window.indexedDB.open("BudgetDB", 1);
-
-  request.onerror = function (event) {
-    alert("Database error: " + event.target.errorCode);
-  };
-
-  request.onsuccess = function (event) {
-    db = event.target.result;
-    fetchCategories();
-    fetchTransactions();
-  };
-
-  request.onupgradeneeded = function (event) {
-    let db = event.target.result;
-    db.createObjectStore("categories", { keyPath: "id", autoIncrement: true });
-    db.createObjectStore("transactions", {
-      keyPath: "id",
-      autoIncrement: true,
+  document
+    .querySelector(".registerButton")
+    .addEventListener("click", function () {
+      register();
     });
-  };
+
+  document.querySelector(".loginButton").addEventListener("click", function () {
+    login();
+  });
 });
 
-async function addCategory() {
-  const categoryName = document.querySelector("#categoryName").value;
-  const priority = document.querySelector("#priority").value;
-  const isFun = document.querySelector("#isFun").checked;
+let token = "";
 
-  const transaction = db.transaction(["categories"], "readwrite");
-  const store = transaction.objectStore("categories");
-  let request = store.add({
-    name: categoryName,
-    priority: parseInt(priority, 10),
-    isFun,
+async function register() {
+  const username = document.getElementById("registerUsername").value;
+  const password = document.getElementById("registerPassword").value;
+
+  console.log("Register clicked and ran!");
+  const response = await fetch("/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
   });
 
-  request.onsuccess = function () {
-    alert("Category added successfully");
-    fetchCategories();
-  };
-
-  request.onerror = function (e) {
-    alert("Error adding category: " + e.target.error.message);
-  };
+  if (response.ok) {
+    toastr.success("Registration successful");
+  } else {
+    const error = await response.json();
+    toastr.error(`Registration failed: ${error.message}`);
+  }
 }
 
-async function fetchCategories() {
-  const transaction = db.transaction(["categories"], "readonly");
-  const store = transaction.objectStore("categories");
-  let request = store.openCursor();
-  const categoriesList = document.getElementById("categoriesList");
-  categoriesList.innerHTML = "";
+async function login() {
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
 
-  request.onsuccess = function (event) {
-    let cursor = event.target.result;
-    if (cursor) {
-      const entry = document.createElement("li");
-      entry.textContent = `Category: ${cursor.value.name}, Priority: ${cursor.value.priority}, Is Fun: ${cursor.value.isFun}`;
-      categoriesList.appendChild(entry);
-      cursor.continue();
-    }
-  };
+  console.log("Login clicked and ran!");
+  const response = await fetch("/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    token = data.token;
+    toastr.success("Login successful");
+    fetchCategories();
+    fetchTransactions();
+    fetchBudget();
+  } else {
+    const error = await response.json();
+    toastr.error(`Login failed: ${error.message}`);
+  }
+}
+
+async function addCategory() {
+  const categoryName = document.getElementById("categoryName").value;
+  const priority = document.getElementById("priority").value;
+  const isFun = document.getElementById("isFun").checked;
+
+  const response = await fetch("/add-category", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name: categoryName,
+      priority: parseInt(priority, 10),
+      isFun,
+    }),
+  });
+
+  if (response.ok) {
+    toastr.success("Category added successfully");
+    fetchCategories();
+  } else {
+    toastr.error("Error adding category");
+  }
 }
 
 async function recordTransaction() {
@@ -71,38 +88,78 @@ async function recordTransaction() {
   const amount = document.getElementById("amount").value;
   const categoryName = document.getElementById("transactionCategory").value;
 
-  const transaction = db.transaction(["transactions"], "readwrite");
-  const store = transaction.objectStore("transactions");
-  let request = store.add({ type, amount: parseFloat(amount), categoryName });
+  const response = await fetch("/record-transaction", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ type, amount: parseFloat(amount), categoryName }),
+  });
 
-  request.onsuccess = function () {
-    alert("Transaction recorded successfully");
+  if (response.ok) {
+    toastr.success("Transaction recorded successfully");
     fetchTransactions();
-  };
+  } else {
+    toastr.error("Error recording transaction");
+  }
+}
 
-  request.onerror = function (e) {
-    alert("Error recording transaction: " + e.target.error.message);
-  };
+async function fetchCategories() {
+  const response = await fetch("/categories", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (response.ok) {
+    const categories = await response.json();
+    const categoriesList = document.getElementById("categoriesList");
+    categoriesList.innerHTML = "";
+
+    categories.forEach((category) => {
+      const entry = document.createElement("li");
+      entry.textContent = `Category: ${category.name}, Priority: ${category.priority}, Is Fun: ${category.isFun}`;
+      categoriesList.appendChild(entry);
+    });
+  }
 }
 
 async function fetchTransactions() {
-  const transaction = db.transaction(["transactions"], "readonly");
-  const store = transaction.objectStore("transactions");
-  let request = store.openCursor();
-  const transactionsList = document.getElementById("transactionsList");
-  transactionsList.innerHTML = "";
+  const response = await fetch("/transactions", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-  request.onsuccess = function (event) {
-    let cursor = event.target.result;
-    if (cursor) {
+  if (response.ok) {
+    const transactions = await response.json();
+    const transactionsList = document.getElementById("transactionsList");
+    transactionsList.innerHTML = "";
+
+    transactions.forEach((transaction) => {
       const entry = document.createElement("li");
-      entry.textContent = `Type: ${cursor.value.type}, Amount: ${cursor.value.amount}, Category: ${cursor.value.categoryName}`;
+      entry.textContent = `Type: ${transaction.type}, Amount: ${transaction.amount}, Category: ${transaction.categoryName}`;
       transactionsList.appendChild(entry);
-      cursor.continue();
-    }
-  };
+    });
+  }
 }
 
 async function fetchBudget() {
-  console.log("Fetch budget data from IndexedDB or server");
+  const response = await fetch("/budget", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    const budgetOverview = document.getElementById("budgetOverview");
+
+    budgetOverview.innerHTML = `
+      <p>Total Income: $${data.totalIncome.toFixed(2)}</p>
+      <p>Total Expenses: $${data.totalExpenses.toFixed(2)}</p>
+      <p>Remaining Budget: $${data.remainingBudget.toFixed(2)}</p>
+    `;
+
+    if (data.remainingBudget < 0) {
+      toastr.error("You have exceeded your budget!");
+    } else if (data.remainingBudget < data.totalIncome * 0.1) {
+      toastr.warning("You're nearing your budget limit.");
+    }
+  }
 }
