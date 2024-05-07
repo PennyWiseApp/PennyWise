@@ -45,6 +45,22 @@ section {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Make the register and login sections less prominent */
+#register-section,
+#login-section {
+  background-color: #f9f9f9; /* Lighter background */
+  padding: 15px;
+  border: 1px solid #e0e0e0; /* Lighter border */
+  box-shadow: none; /* Remove shadow for a flatter appearance */
+}
+
+#register-section:hover,
+#login-section:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle hover effect */
 }
 
 ul {
