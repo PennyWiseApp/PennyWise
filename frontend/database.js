@@ -1,9 +1,6 @@
-// database.js
 import { Sequelize, DataTypes } from "sequelize";
 
-// Change the database storage to a file instead of memory if persistent storage is needed
-// For example: const sequelize = new Sequelize('sqlite:data/database.db');
-const sequelize = new Sequelize("sqlite::memory:"); // In-memory database for testing, change for production
+const sequelize = new Sequelize("sqlite::memory:");
 
 const User = sequelize.define("User", {
   username: {
@@ -21,14 +18,32 @@ const Category = sequelize.define("Category", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   priority: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 10,
+    validate: {
+      min: 1,
+      max: 10,
+    },
   },
-  isFun: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
+  limitAmount: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+    validate: {
+      min: 0,
+    },
+  },
+  limitCount: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    validate: {
+      min: 0,
+    },
   },
 });
 
@@ -51,17 +66,37 @@ const Transaction = sequelize.define("Transaction", {
   },
 });
 
-// Define relationships
-User.hasMany(Category, { foreignKey: "userId" });
+const Goal = sequelize.define("Goal", {
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  targetAmount: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  currentAmount: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+    allowNull: false,
+  },
+  period: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+
+User.hasMany(Category, { foreignKey: "userId", onDelete: "CASCADE" });
 Category.belongsTo(User, { foreignKey: "userId" });
 
-User.hasMany(Transaction, { foreignKey: "userId" });
+User.hasMany(Transaction, { foreignKey: "userId", onDelete: "CASCADE" });
 Transaction.belongsTo(User, { foreignKey: "userId" });
 
-// Async function to handle database synchronization
+User.hasMany(Goal, { foreignKey: "userId", onDelete: "CASCADE" });
+Goal.belongsTo(User, { foreignKey: "userId" });
+
 async function syncDatabase() {
-  await sequelize.sync({ force: false }); // Set force: true to drop/recreate tables
+  await sequelize.sync({ force: true });
 }
 
-// Export models and database functions
-export { sequelize, User, Category, Transaction, syncDatabase };
+export { sequelize, User, Category, Transaction, Goal, syncDatabase };

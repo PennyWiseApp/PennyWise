@@ -7,6 +7,7 @@ import {
   User,
   Category,
   Transaction,
+  Goal,
   syncDatabase,
 } from "./database.js";
 
@@ -30,7 +31,6 @@ function authenticateToken(req, res, next) {
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ username, password: hashedPassword });
@@ -42,7 +42,6 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
   const user = await User.findOne({ where: { username } });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(400).json({ error: "Invalid username or password" });
@@ -53,30 +52,31 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/add-category", authenticateToken, async (req, res) => {
-  const { name, priority, isFun } = req.body;
+  const { name, priority, isFun, limitAmount, limitCount } = req.body;
   const newCategory = await Category.create({
     name,
     priority,
     isFun,
+    limitAmount,
+    limitCount,
     userId: req.user.id,
   });
-  res
-    .status(200)
-    .json({ message: "Category added successfully", category: newCategory });
+  res.status(200).json(newCategory);
 });
 
 app.post("/record-transaction", authenticateToken, async (req, res) => {
   const { type, amount, categoryName } = req.body;
+  const category = await Category.findOne({
+    where: { name: categoryName, userId: req.user.id },
+  });
   const newTransaction = await Transaction.create({
     type,
     amount,
     categoryName,
     userId: req.user.id,
   });
-  res.status(201).json({
-    message: "Transaction recorded successfully",
-    transaction: newTransaction,
-  });
+  console.log("Data sent to the database:", newTransaction);
+  res.status(201).json(newTransaction);
 });
 
 app.get("/categories", authenticateToken, async (req, res) => {
@@ -92,22 +92,61 @@ app.get("/transactions", authenticateToken, async (req, res) => {
 });
 
 app.get("/budget", authenticateToken, async (req, res) => {
-  const transactions = await Transaction.findAll({
-    where: { userId: req.user.id },
-  });
-  let totalIncome = 0;
-  let totalExpenses = 0;
+  try {
+    const expenses = await Transaction.findAll({
+      where: { userId: req.user.id, type: "Expense" },
+      attributes: ["amount"],
+      raw: true,
+    });
+    const totalExpenses = expenses.reduce((acc, curr) => acc + curr.amount, 0);
 
-  transactions.forEach((transaction) => {
-    if (transaction.type === "income") {
-      totalIncome += transaction.amount;
-    } else if (transaction.type === "expense") {
-      totalExpenses += transaction.amount;
-    }
-  });
+    const incomes = await Transaction.findAll({
+      where: { userId: req.user.id, type: "Income" },
+      attributes: ["amount"],
+      raw: true,
+    });
+    const totalIncome = incomes.reduce((acc, curr) => acc + curr.amount, 0);
 
-  const remainingBudget = totalIncome - totalExpenses;
-  res.json({ totalIncome, totalExpenses, remainingBudget });
+    const remainingBudget = totalIncome - totalExpenses;
+
+    res.json({ totalIncome, totalExpenses, remainingBudget });
+  } catch (error) {
+    console.error("Failed to calculate budget:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/goals", authenticateToken, async (req, res) => {
+  const goals = await Goal.findAll({ where: { userId: req.user.id } });
+  res.json(goals);
+});
+
+app.post("/goals", authenticateToken, async (req, res) => {
+  const { type, targetAmount, period } = req.body;
+  try {
+    const newGoal = await Goal.create({
+      type,
+      targetAmount,
+      period,
+      userId: req.user.id,
+      currentAmount: 0, // Assuming starting from zero
+    });
+    res.status(201).json(newGoal);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.patch("/goals/:goalId", authenticateToken, async (req, res) => {
+  const { currentAmount } = req.body;
+  const goal = await Goal.findByPk(req.params.goalId);
+  if (goal) {
+    goal.currentAmount = currentAmount;
+    await goal.save();
+    res.json(goal);
+  } else {
+    res.status(404).send("Goal not found");
+  }
 });
 
 syncDatabase().then(() => {
