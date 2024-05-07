@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "start": "cd frontend && node server",
-    "test": "jest"
     "postinstall": "cd backend && pip3 install -r requirements.txt"
   },
   "repository": {
@@ -25,15 +24,6 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^8.5.1",
     "sequelize": "^6.37.3",
-    "sqlite3": "^5.1.7",
-    "toastr": "^2.1.4"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.0.0",
-    "jsdom": "^20.0.0"
-  },
-  "jest": {
-    "testEnvironment": "jsdom"
+    "sqlite3": "^5.1.7"
   }
 }
