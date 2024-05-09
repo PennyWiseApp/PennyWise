@@ -21,6 +21,11 @@ const User = sequelize.define("User", {
   },
 });
 
+/**
+ * The Category model representing a category in the PennyWise application.
+ *
+ * @type {import("sequelize").Model<Category>}
+ */
 const Category = sequelize.define("Category", {
   name: {
     type: DataTypes.STRING,
@@ -41,16 +46,16 @@ const Category = sequelize.define("Category", {
   limitAmount: {
     type: DataTypes.FLOAT,
     allowNull: true,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
   },
   limitCount: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
+  },
+  warned: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 });
 
@@ -75,6 +80,10 @@ const Transaction = sequelize.define("Transaction", {
   date: {
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW,
+  },
+  alert: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 });
 
