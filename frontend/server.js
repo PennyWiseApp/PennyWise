@@ -10,6 +10,14 @@ app.use(cors());
 app.use(express.static("client", { extensions: ["html"] }));
 app.use(express.json());
 
+/**
+ * Middleware function to authenticate a token.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {void}
+ */
 function authenticateToken(req, res, next) {
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
@@ -22,6 +30,13 @@ function authenticateToken(req, res, next) {
   });
 }
 
+/**
+ * Registers a new user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -33,6 +48,13 @@ app.post("/register", async (req, res) => {
   }
 });
 
+/**
+ * Logs in a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ where: { username } });
@@ -44,6 +66,13 @@ app.post("/login", async (req, res) => {
   res.status(200).json({ token });
 });
 
+/**
+ * Adds a new category for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.post("/add-category", authenticateToken, async (req, res) => {
   const { name, priority, isFun, limitAmount, limitCount } = req.body;
   const newCategory = await Category.create({
@@ -57,6 +86,13 @@ app.post("/add-category", authenticateToken, async (req, res) => {
   res.status(200).json(newCategory);
 });
 
+/**
+ * Records a new transaction for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.post("/record-transaction", authenticateToken, async (req, res) => {
   const { type, amount, categoryName } = req.body;
   const category = await Category.findOne({
@@ -84,6 +120,13 @@ app.get("/transactions", authenticateToken, async (req, res) => {
   res.json(transactions);
 });
 
+/**
+ * Retrieves budget information for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.get("/budget", authenticateToken, async (req, res) => {
   try {
     const expenses = await Transaction.findAll({
@@ -109,11 +152,25 @@ app.get("/budget", authenticateToken, async (req, res) => {
   }
 });
 
+/**
+ * Retrieves goals for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.get("/goals", authenticateToken, async (req, res) => {
   const goals = await Goal.findAll({ where: { userId: req.user.id } });
   res.json(goals);
 });
 
+/**
+ * Adds a new goal for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.post("/goals", authenticateToken, async (req, res) => {
   const { type, targetAmount, period } = req.body;
   try {

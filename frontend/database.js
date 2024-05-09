@@ -2,6 +2,13 @@ import { Sequelize, DataTypes } from "sequelize";
 
 const sequelize = new Sequelize("sqlite::memory:");
 
+/**
+ * Represents a user in the application.
+ *
+ * @typedef {Object} User
+ * @property {string} username - The username of the user.
+ * @property {string} password - The password of the user.
+ */
 const User = sequelize.define("User", {
   username: {
     type: DataTypes.STRING,
@@ -47,6 +54,11 @@ const Category = sequelize.define("Category", {
   },
 });
 
+/**
+ * The Transaction model representing a transaction in the database.
+ *
+ * @type {import("sequelize").Model<Transaction>}
+ */
 const Transaction = sequelize.define("Transaction", {
   type: {
     type: DataTypes.STRING,
@@ -66,6 +78,11 @@ const Transaction = sequelize.define("Transaction", {
   },
 });
 
+/**
+ * The Goal model representing a goal in the application.
+ *
+ * @type {import("sequelize").Model<Goal>}
+ */
 const Goal = sequelize.define("Goal", {
   type: {
     type: DataTypes.STRING,

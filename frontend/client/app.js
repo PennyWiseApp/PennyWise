@@ -33,6 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let token = "";
 
+/**
+ * Registers a user by sending a POST request to the server.
+ * @async
+ * @function register
+ */
 async function register() {
   const username = document.getElementById("registerUsername").value;
   const password = document.getElementById("registerPassword").value;
@@ -50,6 +55,10 @@ async function register() {
   }
 }
 
+/**
+ * Logs in the user by sending a POST request to the server with the provided username and password.
+ * If the login is successful, it retrieves the user's token and performs additional fetch requests.
+ */
 async function login() {
   const username = document.getElementById("loginUsername").value;
   const password = document.getElementById("loginPassword").value;
@@ -72,6 +81,11 @@ async function login() {
   }
 }
 
+/**
+ * Adds a category to the application.
+ * @async
+ * @function addCategory
+ */
 async function addCategory() {
   const categoryName = document.getElementById("categoryName").value;
   const priority = document.getElementById("priority").value;
@@ -126,6 +140,10 @@ async function recordTransaction() {
   }
 }
 
+/**
+ * Fetches categories from the server and updates the UI.
+ * @returns {Promise<void>} A promise that resolves when the categories are fetched and the UI is updated.
+ */
 async function fetchCategories() {
   const response = await fetch("/categories", {
     headers: { Authorization: `Bearer ${token}` },
@@ -248,6 +266,11 @@ async function calculateBudget() {
   }
 }
 
+/**
+ * Sets a goal by sending a POST request to the server.
+ * @async
+ * @function setGoal
+ */
 async function setGoal() {
   const type = document.querySelector('input[name="goalType"]:checked').value;
   const targetAmount = document.getElementById("goalAmount").value;
