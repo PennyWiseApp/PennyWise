@@ -2,14 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
-import {
-  sequelize,
-  User,
-  Category,
-  Transaction,
-  Goal,
-  syncDatabase,
-} from "./database.js";
+import { User, Category, Transaction, Goal, syncDatabase } from "./database.js";
 
 const app = express();
 

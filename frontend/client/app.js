@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".loginBtn").addEventListener("click", function () {
     login();
   });
+  document.querySelector(".logoutBtn").addEventListener("click", function () {
+    token = "";
+    window.location.reload();
+  });
+
   document
     .querySelector(".addCategoryBtn")
     .addEventListener("click", function () {
