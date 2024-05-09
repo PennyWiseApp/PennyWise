@@ -67,6 +67,18 @@ app.post("/login", async (req, res) => {
 });
 
 /**
+ * Retrieves categories for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
+app.get("/categories", authenticateToken, async (req, res) => {
+  const categories = await Category.findAll({ where: { userId: req.user.id } });
+  res.json(categories);
+});
+
+/**
  * Adds a new category for a user.
  *
  * @param {Object} req - The request object.
@@ -87,6 +99,40 @@ app.post("/add-category", authenticateToken, async (req, res) => {
 });
 
 /**
+ * Deletes a category for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
+app.delete("/category/:id", authenticateToken, async (req, res) => {
+  try {
+    const result = await Category.destroy({
+      where: { id: req.params.id, userId: req.user.id },
+    });
+    result
+      ? res.status(200).json({ message: "Category deleted." })
+      : res.status(404).json({ error: "Category not found." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Retrieves transactions for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
+app.get("/transactions", authenticateToken, async (req, res) => {
+  const transactions = await Transaction.findAll({
+    where: { userId: req.user.id },
+  });
+  res.json(transactions);
+});
+
+/**
  * Records a new transaction for a user.
  *
  * @param {Object} req - The request object.
@@ -103,21 +149,46 @@ app.post("/record-transaction", authenticateToken, async (req, res) => {
     amount,
     categoryName,
     userId: req.user.id,
+    alert: false,
   });
-  console.log("Data sent to the database:", newTransaction);
-  res.status(201).json(newTransaction);
+
+  if (
+    category &&
+    category.limitAmount &&
+    amount > category.limitAmount &&
+    !category.warned
+  ) {
+    newTransaction.alert = true;
+    await newTransaction.save();
+    category.warned = true;
+    await category.save();
+    res.status(201).json({
+      message: "Transaction recorded, limit exceeded!",
+      newTransaction,
+    });
+  } else {
+    res.status(201).json(newTransaction);
+  }
 });
 
-app.get("/categories", authenticateToken, async (req, res) => {
-  const categories = await Category.findAll({ where: { userId: req.user.id } });
-  res.json(categories);
-});
-
-app.get("/transactions", authenticateToken, async (req, res) => {
-  const transactions = await Transaction.findAll({
-    where: { userId: req.user.id },
-  });
-  res.json(transactions);
+/**
+ * Deletes a transaction for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
+app.delete("/transaction/:id", authenticateToken, async (req, res) => {
+  try {
+    const result = await Transaction.destroy({
+      where: { id: req.params.id, userId: req.user.id },
+    });
+    result
+      ? res.status(200).json({ message: "Transaction deleted." })
+      : res.status(404).json({ error: "Transaction not found." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /**
@@ -184,18 +255,6 @@ app.post("/goals", authenticateToken, async (req, res) => {
     res.status(201).json(newGoal);
   } catch (err) {
     res.status(400).json({ error: err.message });
-  }
-});
-
-app.patch("/goals/:goalId", authenticateToken, async (req, res) => {
-  const { currentAmount } = req.body;
-  const goal = await Goal.findByPk(req.params.goalId);
-  if (goal) {
-    goal.currentAmount = currentAmount;
-    await goal.save();
-    res.json(goal);
-  } else {
-    res.status(404).send("Goal not found");
   }
 });
 
