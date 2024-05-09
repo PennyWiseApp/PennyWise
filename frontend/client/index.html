@@ -17,22 +17,23 @@
   <body>
     <h1>Budget App</h1>
     <button class="logoutBtn">Logout</button>
-    <section>
-      <h2>Register</h2>
-      <label for="registerUsername">Username:</label>
-      <input type="text" id="registerUsername" />
-      <label for="registerPassword">Password:</label>
-      <input type="password" id="registerPassword" />
-      <button class="registerBtn">Register</button>
-    </section>
-
-    <section>
-      <h2>Login</h2>
-      <label for="loginUsername">Username:</label>
-      <input type="text" id="loginUsername" />
-      <label for="loginPassword">Password:</label>
-      <input type="password" id="loginPassword" />
-      <button class="loginBtn">Login</button>
+    <section class="login-page">
+      <form class="register-form">
+        <input type="text" placeholder="username" id="registerUsername" />
+        <input type="password" placeholder="password" id="registerPassword" />
+        <button type="button" class="registerBtn">create</button>
+        <p class="message">
+          Already registered? <a href="#" class="toggle">Sign In</a>
+        </p>
+      </form>
+      <form class="login-form" style="display: none">
+        <input type="text" placeholder="username" id="loginUsername" />
+        <input type="password" placeholder="password" id="loginPassword" />
+        <button type="button" class="loginBtn">login</button>
+        <p class="message">
+          Not registered? <a href="#" class="toggle">Create an account</a>
+        </p>
+      </form>
     </section>
 
     <section>
