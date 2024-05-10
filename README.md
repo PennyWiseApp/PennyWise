@@ -1,7 +1,3 @@
-# Project Setup
-
-This project is structured to include both a Node.js-based frontend and a Python-based backend utilizing Streamlit. To streamline the setup process, we have included a `postinstall` script in the `package.json` file that automatically prepares the Python environment and installs the necessary Python dependencies after running `npm install`.
-
 ### Prerequisites
 
 Before proceeding with the setup, please ensure you have the following installed on your system:
@@ -9,8 +5,6 @@ Before proceeding with the setup, please ensure you have the following installed
 - Node.js (and npm)
 - Python 3
 - pip (Python package installer)
-
-These tools are essential for the setup process and the execution of the application.
 
 ### Installation
 
@@ -31,15 +25,8 @@ These tools are essential for the setup process and the execution of the applica
    npm install
    ```
 
-   This command does several things:
-
-   - Installs the Node.js dependencies listed in `package.json`.
-   - Automatically triggers the `postinstall` script, which sets up the Python virtual environment (`venv`) within the `backend/` directory and installs the Python dependencies specified in `backend/requirements.txt`.
-
    **Note:** The `postinstall` script specifically does the following:
 
-   - Creates a Python virtual environment in `backend/venv`.
-   - Activates the virtual environment.
    - Uses `pip` to install the Python packages listed in `backend/requirements.txt`.
 
 ### Running the Application
@@ -50,14 +37,6 @@ After the installation is complete, you're ready to run the application.
 
   ```bash
   npm start
-  ```
-
-  (Refer to the `scripts` section in `package.json` for the exact command used to start the frontend.)
-
-- **To launch the Streamlit application**, use:
-
-  ```bash
-    npm start-streamlit
   ```
 
 ### Additional Notes
@@ -79,15 +58,8 @@ Shreya Jagannatha UP2105326
 - Node.js
 - Express
 - HTML/CSS/JavaScript
-- IndexedDB
-
-## Setup
-
-### Installation
-
-1. Install Node.js and npm.
-2. Clone this repository.
-3. Navigate to the project directory and install dependencies:
-   ```bash
-   npm install
-   ```
+- Bcrypt
+- Cors
+- jsonwebtoken
+- sequelize
+- sqlite3
