@@ -132,7 +132,7 @@ async function deleteCategory(categoryId) {
 
   if (response.ok) {
     showToast("Category deleted", "success");
-    fetchCategories(); // Refresh the list
+    fetchCategories();
   } else {
     const error = await response.json();
     showToast(`Delete failed: ${error.message}`, "error");
@@ -214,7 +214,7 @@ async function deleteTransaction(transactionId) {
 
   if (response.ok) {
     showToast("Transaction deleted", "success");
-    fetchTransactions(); // Refresh the list
+    fetchTransactions();
   } else {
     const error = await response.json();
     showToast(`Delete failed: ${error.message}`, "error");

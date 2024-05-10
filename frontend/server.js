@@ -250,7 +250,7 @@ app.post("/goals", authenticateToken, async (req, res) => {
       targetAmount,
       period,
       userId: req.user.id,
-      currentAmount: 0, // Assuming starting from zero
+      currentAmount: 0,
     });
     res.status(201).json(newGoal);
   } catch (err) {
